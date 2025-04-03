@@ -16,41 +16,38 @@
 
 package com.example.jetcaster.ui.latest_episodes
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MusicNote
-import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.wear.compose.material.ChipDefaults
-import androidx.wear.compose.material.ExperimentalWearMaterialApi
-import androidx.wear.compose.material.Text
+import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
+import androidx.wear.compose.foundation.lazy.TransformingLazyColumnState
+import androidx.wear.compose.foundation.lazy.items
+import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
+import androidx.wear.compose.material3.AlertDialog
+import androidx.wear.compose.material3.Button
+import androidx.wear.compose.material3.Icon
+import androidx.wear.compose.material3.ListHeader
+import androidx.wear.compose.material3.ScreenScaffold
+import androidx.wear.compose.material3.Text
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import androidx.wear.compose.ui.tooling.preview.WearPreviewFontScales
 import com.example.jetcaster.R
 import com.example.jetcaster.core.player.model.PlayerEpisode
 import com.example.jetcaster.ui.components.MediaContent
+import com.example.jetcaster.ui.components.PlaceholderButton
 import com.example.jetcaster.ui.preview.WearPreviewEpisodes
-import com.google.android.horologist.annotations.ExperimentalHorologistApi
-import com.google.android.horologist.composables.PlaceholderChip
-import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults
-import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults.padding
-import com.google.android.horologist.compose.layout.ScreenScaffold
-import com.google.android.horologist.compose.layout.rememberResponsiveColumnState
-import com.google.android.horologist.compose.material.AlertDialog
-import com.google.android.horologist.compose.material.Chip
-import com.google.android.horologist.compose.material.ListHeaderDefaults
-import com.google.android.horologist.compose.material.ResponsiveListHeader
-import com.google.android.horologist.images.base.paintable.ImageVectorPaintable.Companion.asPaintable
+import com.google.android.horologist.compose.layout.ColumnItemType
+import com.google.android.horologist.compose.layout.rememberResponsiveColumnPadding
 import com.google.android.horologist.images.base.util.rememberVectorPainter
-import com.google.android.horologist.media.ui.screens.entity.EntityScreen
 
 @Composable fun LatestEpisodesScreen(
     onPlayButtonClick: () -> Unit,
@@ -78,16 +75,17 @@ fun LatestEpisodeScreen(
     onPlayEpisode: (PlayerEpisode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val columnState = rememberResponsiveColumnState(
-        contentPadding = padding(
-            first = ScalingLazyColumnDefaults.ItemType.Text,
-            last = ScalingLazyColumnDefaults.ItemType.Chip
-        )
+    val contentPadding = rememberResponsiveColumnPadding(
+        first = ColumnItemType.ListHeader,
+        last = ColumnItemType.Button
     )
+
+    val columnState = rememberTransformingLazyColumnState()
     ScreenScaffold(
         scrollState = columnState,
+        contentPadding = contentPadding,
         modifier = modifier
-    ) {
+    ) { contentPadding ->
         when (uiState) {
             is LatestEpisodeScreenState.Loaded -> {
                 LatestEpisodesScreen(
@@ -95,20 +93,24 @@ fun LatestEpisodeScreen(
                     onPlayButtonClick = onPlayButtonClick,
                     onPlayEpisode = onPlayEpisode,
                     onPlayEpisodes = onPlayEpisodes,
+                    contentPadding = contentPadding,
+                    scrollState = columnState,
                     modifier = modifier
                 )
             }
 
             is LatestEpisodeScreenState.Empty -> {
                 AlertDialog(
-                    showDialog = true,
-                    onDismiss = onDismiss,
-                    message = stringResource(R.string.podcasts_no_episode_podcasts)
+                    visible = true,
+                    onDismissRequest = onDismiss,
+                    title = { stringResource(R.string.podcasts_no_episode_podcasts) },
                 )
             }
 
             is LatestEpisodeScreenState.Loading -> {
                 LatestEpisodesScreenLoading(
+                    contentPadding = contentPadding,
+                    scrollState = columnState,
                     modifier = modifier
                 )
             }
@@ -116,23 +118,30 @@ fun LatestEpisodeScreen(
     }
 }
 
-@OptIn(ExperimentalHorologistApi::class)
 @Composable
 fun ButtonsContent(
     episodes: List<PlayerEpisode>,
     onPlayButtonClick: () -> Unit,
     onPlayEpisodes: (List<PlayerEpisode>) -> Unit,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
-    Chip(
-        label = stringResource(id = R.string.button_play_content_description),
+    Button(
         onClick = {
             onPlayButtonClick()
             onPlayEpisodes(episodes)
         },
-        modifier = modifier.padding(bottom = 16.dp),
-        icon = Icons.Outlined.PlayArrow.asPaintable(),
-    )
+        enabled = enabled,
+        icon = {
+            Icon(
+                painter = painterResource(id = R.drawable.play),
+                contentDescription = stringResource(id = R.string.button_play_content_description)
+            )
+        },
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Text(stringResource(id = R.string.button_play_content_description))
+    }
 }
 
 @Composable
@@ -141,69 +150,78 @@ fun LatestEpisodesScreen(
     onPlayButtonClick: () -> Unit,
     onPlayEpisode: (PlayerEpisode) -> Unit,
     onPlayEpisodes: (List<PlayerEpisode>) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues,
+    scrollState: TransformingLazyColumnState
 ) {
-    EntityScreen(
+    TransformingLazyColumn(
         modifier = modifier,
-        headerContent = {
-            ResponsiveListHeader(
-                contentPadding = ListHeaderDefaults.firstItemPadding()
-            ) {
-                Text(text = stringResource(id = R.string.latest_episodes),)
-            }
-        },
-        content = {
-            items(count = episodeList.size) { index ->
-                MediaContent(
-                    episode = episodeList[index],
-                    episodeArtworkPlaceholder = rememberVectorPainter(
-                        image = Icons.Default.MusicNote,
-                        tintColor = Color.Blue,
-                    ),
-                    onItemClick = {
-                        onPlayButtonClick()
-                        onPlayEpisode(episodeList[index])
-                    }
-                )
-            }
-        },
-        buttonsContent = {
+        state = scrollState,
+        contentPadding = contentPadding
+    ) {
+        item {
+            LatestEpisodesListHeader()
+        }
+        item {
             ButtonsContent(
                 episodes = episodeList,
                 onPlayButtonClick = onPlayButtonClick,
                 onPlayEpisodes = onPlayEpisodes
             )
-        },
-    )
+        }
+        items(episodeList) { episode ->
+            MediaContent(
+                episode = episode,
+                episodeArtworkPlaceholder = painterResource(id = R.drawable.music),
+                onItemClick = {
+                    onPlayButtonClick()
+                    onPlayEpisode(episode)
+                }
+            )
+        }
+    }
 }
 
-@OptIn(ExperimentalWearMaterialApi::class)
 @Composable
-fun LatestEpisodesScreenLoading(
+fun LatestEpisodesListHeader(
     modifier: Modifier = Modifier
 ) {
-    EntityScreen(
+    ListHeader {
+        Text(
+            text = stringResource(id = R.string.latest_episodes),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun LatestEpisodesScreenLoading(
+    contentPadding: PaddingValues,
+    scrollState: TransformingLazyColumnState,
+    modifier: Modifier = Modifier
+) {
+    TransformingLazyColumn(
         modifier = modifier,
-        headerContent = {
-            ResponsiveListHeader(
-                contentPadding = ListHeaderDefaults.firstItemPadding()
-            ) {
-                Text(text = stringResource(id = R.string.latest_episodes),)
-            }
-        },
-        content = {
-            items(count = 2) {
-                PlaceholderChip(colors = ChipDefaults.secondaryChipColors())
-            }
-        },
-        buttonsContent = {
+        state = scrollState,
+        contentPadding = contentPadding
+    ) {
+        item {
+            LatestEpisodesListHeader()
+        }
+        item {
             ButtonsContent(
                 episodes = emptyList(),
                 onPlayButtonClick = { },
                 onPlayEpisodes = { },
+                enabled = false
             )
-        },
-    )
+        }
+        items(count = 2) {
+            PlaceholderButton()
+        }
+    }
 }
 
 @WearPreviewDevices
@@ -213,17 +231,19 @@ fun LatestEpisodeScreenLoadedPreview(
     @PreviewParameter(WearPreviewEpisodes::class)
     episode: PlayerEpisode
 ) {
-    val columnState = rememberResponsiveColumnState(
-        contentPadding = padding(
-            first = ScalingLazyColumnDefaults.ItemType.Text,
-            last = ScalingLazyColumnDefaults.ItemType.Chip
-        )
+    val contentPadding = rememberResponsiveColumnPadding(
+        first = ColumnItemType.ListHeader,
+        last = ColumnItemType.Button
     )
+
+    val columnState = rememberTransformingLazyColumnState()
     LatestEpisodesScreen(
         episodeList = listOf(episode),
         onPlayButtonClick = { },
         onPlayEpisode = { },
-        onPlayEpisodes = { }
+        onPlayEpisodes = { },
+        contentPadding = contentPadding,
+        scrollState = columnState
     )
 }
 
@@ -231,11 +251,11 @@ fun LatestEpisodeScreenLoadedPreview(
 @WearPreviewFontScales
 @Composable
 fun LatestEpisodeScreenLoadingPreview() {
-    val columnState = rememberResponsiveColumnState(
-        contentPadding = padding(
-            first = ScalingLazyColumnDefaults.ItemType.Text,
-            last = ScalingLazyColumnDefaults.ItemType.Chip
-        )
+    val contentPadding = rememberResponsiveColumnPadding(
+        first = ColumnItemType.ListHeader,
+        last = ColumnItemType.Button
     )
-    LatestEpisodesScreenLoading()
+
+    val columnState = rememberTransformingLazyColumnState()
+    LatestEpisodesScreenLoading(contentPadding, columnState)
 }

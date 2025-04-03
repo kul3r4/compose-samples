@@ -18,15 +18,15 @@ package com.example.jetcaster
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.wear.compose.navigation.SwipeDismissableNavHost
-import androidx.wear.compose.navigation.composable
+import androidx.wear.compose.foundation.pager.rememberPagerState
+import androidx.wear.compose.material3.AppScaffold
+import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavHostState
 import com.example.jetcaster.theme.WearAppTheme
@@ -49,8 +49,8 @@ import com.example.jetcaster.ui.podcasts.PodcastsScreen
 import com.example.jetcaster.ui.queue.QueueScreen
 import com.google.android.horologist.audio.ui.VolumeScreen
 import com.google.android.horologist.audio.ui.VolumeViewModel
-import com.google.android.horologist.compose.layout.AppScaffold
-import com.google.android.horologist.compose.layout.ScreenScaffold
+import com.google.android.horologist.compose.nav.SwipeDismissableNavHost
+import com.google.android.horologist.compose.nav.composable
 import com.google.android.horologist.media.ui.navigation.MediaNavController.navigateToPlayer
 import com.google.android.horologist.media.ui.navigation.MediaNavController.navigateToVolume
 import com.google.android.horologist.media.ui.navigation.NavigationScreens
@@ -66,7 +66,7 @@ fun WearApp() {
     WearAppTheme {
         AppScaffold {
             SwipeDismissableNavHost(
-                startDestination = NavigationScreens.Player.libraryDestination(),
+                startDestination = NavigationScreens.Player.navRoute,
                 navController = navController,
                 modifier = Modifier.background(Color.Transparent),
                 state = navHostState,
