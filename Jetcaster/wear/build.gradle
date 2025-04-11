@@ -96,6 +96,9 @@ dependencies {
     implementation libs.androidx.wear.compose.foundation
     implementation(libs.androidx.material.icons.core)
     implementation(libs.androidx.compose.material.iconsExtended)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui.compose)
+    implementation(libs.androidx.media3.session)
 
     // Horologist for correct Compose layout
     implementation libs.horologist.composables

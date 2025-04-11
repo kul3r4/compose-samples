@@ -66,7 +66,7 @@ fun WearApp() {
     WearAppTheme {
         AppScaffold {
             SwipeDismissableNavHost(
-                startDestination = NavigationScreens.Player.navRoute,
+                startDestination = NavigationScreens.Player.libraryDestination(),
                 navController = navController,
                 modifier = Modifier.background(Color.Transparent),
                 state = navHostState,

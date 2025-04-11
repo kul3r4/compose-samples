@@ -40,7 +40,8 @@ class PodcastCategoryFilterUseCaseTest {
                 "",
                 "",
                 "Episode 1",
-                published = OffsetDateTime.now()
+                published = OffsetDateTime.now(),
+                mediaUrls = listOf("")
             )
             _podcasts = listOf(
                 Podcast(
@@ -54,7 +55,8 @@ class PodcastCategoryFilterUseCaseTest {
                 "",
                 "",
                 "Episode 2",
-                published = OffsetDateTime.now()
+                published = OffsetDateTime.now(),
+                mediaUrls = listOf("")
             )
             _podcasts = listOf(
                 Podcast(
@@ -68,7 +70,10 @@ class PodcastCategoryFilterUseCaseTest {
                 "",
                 "",
                 "Episode 3",
-                published = OffsetDateTime.now()
+                published = OffsetDateTime.now(),
+                mediaUrls = listOf("")
+
+
             )
             _podcasts = listOf(
                 Podcast(
@@ -135,7 +140,7 @@ class PodcastCategoryFilterUseCaseTest {
 
 val testPodcasts = listOf(
     PodcastWithExtraInfo().apply {
-        podcast = Podcast(uri = "nia", title = "Now in Android")
+        podcast = Podcast(uri = "nia", title = "Now in Android",)
     },
     PodcastWithExtraInfo().apply {
         podcast = Podcast(uri = "adb", title = "Android Developers Backstage")
