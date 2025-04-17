@@ -40,19 +40,22 @@ class GetLatestFollowedEpisodesUseCaseTest {
             uri = "",
             podcastUri = testPodcasts[0].podcast.uri,
             title = "title1",
-            published = OffsetDateTime.MIN
+            published = OffsetDateTime.MIN,
+            mediaUrls = emptyList()
         ),
         Episode(
             uri = "",
             podcastUri = testPodcasts[0].podcast.uri,
             title = "title2",
-            published = OffsetDateTime.now()
+            published = OffsetDateTime.now(),
+            mediaUrls = emptyList()
         ),
         Episode(
             uri = "",
             podcastUri = testPodcasts[1].podcast.uri,
             title = "title3",
-            published = OffsetDateTime.MAX
+            published = OffsetDateTime.MAX,
+            mediaUrls = emptyList()
         )
     )
 

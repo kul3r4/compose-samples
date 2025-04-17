@@ -128,6 +128,12 @@ dependencies {
     implementation(libs.androidx.window)
     implementation(libs.androidx.window.core)
 
+    //media3
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.session)
+    implementation(libs.androidx.media3.ui.compose)
+
+    
     implementation(libs.accompanist.adaptive)
 
     implementation(libs.coil.kt.compose)
