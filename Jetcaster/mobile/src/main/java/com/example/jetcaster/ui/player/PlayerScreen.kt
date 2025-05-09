@@ -57,8 +57,12 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Replay10
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
-import androidx.compose.material.icons.outlined.Pause
-import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material.icons.rounded.Forward10
+import androidx.compose.material.icons.rounded.Pause
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Replay10
+import androidx.compose.material.icons.rounded.SkipNext
+import androidx.compose.material.icons.rounded.SkipPrevious
 import androidx.compose.material3.ButtonGroup
 import androidx.compose.material3.ButtonShapes
 import androidx.compose.material3.CircularProgressIndicator
@@ -756,8 +760,8 @@ private fun PlayerButtons(
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 disabledContainerColor = MaterialTheme.colorScheme.primary,
                 disabledContentColor = MaterialTheme.colorScheme.onPrimary,
-                checkedContainerColor = MaterialTheme.colorScheme.primary,
-                checkedContentColor = MaterialTheme.colorScheme.onPrimary,
+                checkedContainerColor = MaterialTheme.colorScheme.tertiary,
+                checkedContentColor = MaterialTheme.colorScheme.onTertiary,
             ),
             shapes = ButtonShapes(
                 shape  = RoundedCornerShape(60.dp),
@@ -767,7 +771,7 @@ private fun PlayerButtons(
             modifier = Modifier.width(186.dp).height(136.dp)
         ) {
             Icon(
-                imageVector = if(isPlaying) Icons.Outlined.Pause else Icons.Outlined.PlayArrow,
+                imageVector = if(isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
                 modifier = Modifier.fillMaxSize(),
                 contentDescription = null
             )
@@ -796,7 +800,7 @@ private fun PlayerButtons(
                 enabled = isPlaying,
             ) {
                 Icon(
-                    imageVector = Icons.Filled.SkipPrevious,
+                    imageVector = Icons.Rounded.SkipPrevious,
                     contentDescription = null
                 )
             }
@@ -814,7 +818,7 @@ private fun PlayerButtons(
                 enabled = isPlaying,
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Replay10,
+                    imageVector = Icons.Rounded.Replay10,
                     contentDescription = null
                 )
             }
@@ -832,7 +836,7 @@ private fun PlayerButtons(
                 enabled = isPlaying,
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Forward10,
+                    imageVector = Icons.Rounded.Forward10,
                     contentDescription = null
                 )
             }
@@ -850,7 +854,7 @@ private fun PlayerButtons(
                 enabled = hasNext,
             ) {
                 Icon(
-                    imageVector = Icons.Filled.SkipNext,
+                    imageVector = Icons.Rounded.SkipNext,
                     contentDescription = null
                 )
             }
