@@ -40,6 +40,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -56,22 +57,24 @@ import androidx.media3.session.MediaSession
 import androidx.media3.ui.compose.PlayerSurface
 import androidx.media3.ui.compose.modifiers.resizeWithContentScale
 import androidx.wear.compose.foundation.ExperimentalWearFoundationApi
-import androidx.wear.compose.foundation.rememberActiveFocusRequester
+import androidx.wear.compose.foundation.requestFocusOnHierarchyActive
 import androidx.wear.compose.foundation.rotary.rotaryScrollable
 import androidx.wear.compose.material.ExperimentalWearMaterialApi
-import androidx.wear.compose.material.MaterialTheme
+import androidx.wear.compose.material3.MaterialTheme
 import com.example.jetcaster.R
 import com.example.jetcaster.ui.components.SettingsButtons
 import com.google.android.horologist.audio.ui.VolumeUiState
 import com.google.android.horologist.audio.ui.VolumeViewModel
 import com.google.android.horologist.audio.ui.volumeRotaryBehavior
+import com.google.android.horologist.images.base.paintable.DrawableResPaintable
 import com.google.android.horologist.images.coil.CoilPaintable
-import com.google.android.horologist.media.ui.components.PodcastControlButtons
-import com.google.android.horologist.media.ui.components.background.ArtworkColorBackground
 import com.google.android.horologist.media.ui.components.controls.SeekButtonIncrement
-import com.google.android.horologist.media.ui.components.display.LoadingMediaDisplay
-import com.google.android.horologist.media.ui.components.display.TextMediaDisplay
-import com.google.android.horologist.media.ui.screens.player.PlayerScreen
+import com.google.android.horologist.media.ui.material3.components.PodcastControlButtons
+import com.google.android.horologist.media.ui.material3.components.background.ArtworkImageBackground
+import com.google.android.horologist.media.ui.material3.components.animated.MarqueeTextMediaDisplay
+import com.google.android.horologist.media.ui.material3.components.display.LoadingMediaDisplay
+import com.google.android.horologist.media.ui.material3.components.display.TextMediaDisplay
+import com.google.android.horologist.media.ui.material3.screens.player.PlayerScreen
 import java.time.Duration
 
 @Composable
@@ -92,6 +95,7 @@ fun PlayerScreen(
     )
 }
 
+@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalWearFoundationApi::class, ExperimentalWearMaterialApi::class)
 @Composable
 private fun PlayerScreen(
@@ -103,6 +107,7 @@ private fun PlayerScreen(
 ) {
     val uiState by playerScreenViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val focusRequester = remember { FocusRequester() }
 
     when (val state = uiState) {
         PlayerScreenUiState.Loading -> LoadingMediaDisplay(modifier)
@@ -111,7 +116,8 @@ private fun PlayerScreen(
                 mediaDisplay = {
                     TextMediaDisplay(
                         title = stringResource(R.string.nothing_playing),
-                        subtitle = ""
+                        subtitle = "",
+                        titleIcon = DrawableResPaintable(R.drawable.ic_logo)
                     )
                 },
                 controlButtons = {
@@ -166,17 +172,21 @@ private fun PlayerScreen(
                 )
                 PlayerScreen(
                     mediaDisplay = {
-
                         if (episode != null && episode.title.isNotEmpty()) {
-                            TextMediaDisplay(
-                                title = episode.podcastName, subtitle = episode.title
+                            MarqueeTextMediaDisplay(
+                                title = episode.title,
+                                artist = episode.podcastName,
+                                titleIcon = DrawableResPaintable(R.drawable.ic_logo)
                             )
                         } else {
                             TextMediaDisplay(
-                                title = stringResource(R.string.nothing_playing), subtitle = ""
+                                title = stringResource(R.string.nothing_playing),
+                                subtitle = "",
+                                titleIcon = DrawableResPaintable(R.drawable.ic_logo)
                             )
                         }
                     },
+
                     controlButtons = {
                         PodcastControlButtons(
                             onPlayButtonClick = ({
@@ -230,36 +240,40 @@ private fun PlayerScreen(
                             enabled = true,
                         )
                     },
-                    modifier = modifier.rotaryScrollable(
-                        volumeRotaryBehavior(
-                            volumeUiStateProvider = { volumeUiState },
-                            onRotaryVolumeInput = { onUpdateVolume },
+                    modifier = modifier
+                        .requestFocusOnHierarchyActive()
+                        .rotaryScrollable(
+                            volumeRotaryBehavior(
+                                volumeUiStateProvider = { volumeUiState },
+                                onRotaryVolumeInput = { onUpdateVolume }
+                            ),
+                            focusRequester = focusRequester
                         ),
-                        focusRequester = rememberActiveFocusRequester(),
-                    ),
                     background = {
-                        ArtworkColorBackground(
-                            paintable = episode?.let { CoilPaintable(episode.podcastImageUrl) },
-                            defaultColor = MaterialTheme.colors.primary,
+                        ArtworkImageBackground(
+                            artwork = episode?.let { CoilPaintable(episode.podcastImageUrl) },
+                            colorScheme = MaterialTheme.colorScheme,
                             modifier = Modifier.fillMaxSize(),
                         )
-                    })
+                    }
+                )
             }
         }
     }
 }
 
 
-@androidx.annotation.OptIn(UnstableApi::class)
-@Composable
-internal fun rememberPlayer(
-    context: Context,
-) = remember {
-    ExoPlayer.Builder(context).setSeekForwardIncrementMs(10000).setSeekBackIncrementMs(10000)
-        .setMediaSourceFactory(
-            ProgressiveMediaSource.Factory(DefaultDataSource.Factory(context))
-        ).setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING).build().apply {
-            playWhenReady = true
-            repeatMode = Player.REPEAT_MODE_ALL
-        }
-}
+    @androidx.annotation.OptIn(UnstableApi::class)
+    @Composable
+    internal fun rememberPlayer(
+        context: Context,
+    ) = remember {
+        ExoPlayer.Builder(context).setSeekForwardIncrementMs(10000).setSeekBackIncrementMs(10000)
+            .setMediaSourceFactory(
+                ProgressiveMediaSource.Factory(DefaultDataSource.Factory(context))
+            ).setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING).build().apply {
+                playWhenReady = true
+                repeatMode = Player.REPEAT_MODE_ALL
+            }
+    }
+
