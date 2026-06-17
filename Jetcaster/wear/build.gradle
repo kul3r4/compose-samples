@@ -23,14 +23,14 @@ plugins {
 }
 
 android {
-    compileSdk 35
+    compileSdk 37
 
     namespace "com.example.jetcaster"
 
     defaultConfig {
         applicationId "com.example.jetcaster"
         minSdk 26
-        targetSdk 34
+        targetSdk 37
         versionCode 1
         versionName "1.0"
     }
@@ -108,9 +108,6 @@ dependencies {
     implementation(libs.androidx.media3.session)
     implementation libs.androidx.media3.common.ktx
 
-    // Horologist for correct Compose layout
-    implementation libs.horologist.compose.layout
-
     //Horologist Media toolkit
     implementation libs.horologist.media.ui
     implementation libs.horologist.media.uimaterial3
@@ -153,7 +150,6 @@ dependencies {
     testImplementation libs.roborazzi
     testImplementation libs.roborazzi.compose
     testImplementation libs.roborazzi.rule
-    testImplementation(libs.horologist.roboscreenshots)
 
     androidTestImplementation libs.androidx.test.ext.junit
     androidTestImplementation libs.androidx.test.espresso.core

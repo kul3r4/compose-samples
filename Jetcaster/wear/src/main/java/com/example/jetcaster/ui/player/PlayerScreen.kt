@@ -33,6 +33,7 @@ package com.example.jetcaster.ui.player
  */
 
 import android.content.Context
+import androidx.annotation.OptIn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -56,10 +57,8 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.session.MediaSession
 import androidx.media3.ui.compose.PlayerSurface
 import androidx.media3.ui.compose.modifiers.resizeWithContentScale
-import androidx.wear.compose.foundation.ExperimentalWearFoundationApi
 import androidx.wear.compose.foundation.requestFocusOnHierarchyActive
 import androidx.wear.compose.foundation.rotary.rotaryScrollable
-import androidx.wear.compose.material.ExperimentalWearMaterialApi
 import androidx.wear.compose.material3.MaterialTheme
 import com.example.jetcaster.R
 import com.example.jetcaster.ui.components.SettingsButtons
@@ -95,8 +94,7 @@ fun PlayerScreen(
     )
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
-@OptIn(ExperimentalWearFoundationApi::class, ExperimentalWearMaterialApi::class)
+@OptIn(UnstableApi::class)
 @Composable
 private fun PlayerScreen(
     playerScreenViewModel: PlayerViewModel,
