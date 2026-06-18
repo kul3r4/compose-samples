@@ -300,11 +300,11 @@ private fun TransformingLazyColumnScope.episodeInfoContent(episode: PlayerEpisod
         val summaryInParagraphs = summary.split("\n+".toRegex()).orEmpty()
         items(summaryInParagraphs) {
             HtmlTextContainer(
-                text = summary,
+                text = it,
                 modifier = Modifier.minimumVerticalContentPadding(
                     TextDefaults.minimumTopListContentPadding,
-                    TextDefaults.minimumBottomListContentPadding
-                )
+                    TextDefaults.minimumBottomListContentPadding,
+                ),
             ) {
                 Text(
                     text = it,
