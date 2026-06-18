@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumnState
 import androidx.wear.compose.foundation.lazy.items
@@ -75,7 +75,7 @@ fun LibraryScreen(
     modifier: Modifier = Modifier,
     libraryScreenViewModel: LibraryViewModel = hiltViewModel(),
 ) {
-    val uiState by libraryScreenViewModel.uiState.collectAsState()
+    val uiState by libraryScreenViewModel.uiState.collectAsStateWithLifecycle()
     val placeholderState = rememberPlaceholderState(isVisible = uiState is LibraryScreenUiState.Loading)
 
     val columnState = rememberTransformingLazyColumnState()

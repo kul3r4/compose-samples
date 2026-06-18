@@ -283,6 +283,7 @@ private fun TransformingLazyColumnScope.episodeInfoContent(episode: PlayerEpisod
                         duration.toMinutes().toInt(),
                     )
                 }
+
                 // Otherwise we just use the date
                 else -> MediumDateFormatter.format(published)
             },

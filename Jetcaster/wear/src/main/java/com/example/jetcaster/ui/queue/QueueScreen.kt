@@ -111,6 +111,7 @@ fun QueueScreen(
                 contentPadding = contentPadding,
                 placeholderState = placeholderState,
             )
+
             QueueScreenState.Loading -> QueueScreenLoaded(
                 episodeList = emptyList(),
                 onPlayButtonClick = { },
@@ -121,6 +122,7 @@ fun QueueScreen(
                 contentPadding = contentPadding,
                 placeholderState = placeholderState,
             )
+
             QueueScreenState.Empty -> QueueScreenEmpty(onDismiss)
         }
     }
@@ -250,7 +252,7 @@ fun ButtonsContent(
                 Icon(
                     painter = painterResource(id = R.drawable.delete),
                     contentDescription =
-                    stringResource(id = R.string.button_delete_queue_content_description),
+                        stringResource(id = R.string.button_delete_queue_content_description),
                 )
             }
         }
