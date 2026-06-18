@@ -41,17 +41,18 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryScrollableTabRow
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,15 +69,22 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.constrainWidth
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import com.example.jetnews.R
 import com.example.jetnews.data.Result
 import com.example.jetnews.data.interests.InterestSection
+import com.example.jetnews.data.interests.InterestsRepository
 import com.example.jetnews.data.interests.TopicSelection
 import com.example.jetnews.data.interests.impl.FakeInterestsRepository
+import com.example.jetnews.deeplink.util.DeepLinkPattern
 import com.example.jetnews.ui.theme.JetnewsTheme
 import kotlin.math.max
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Serializable
 
 enum class Sections(@StringRes val titleResId: Int) {
     Topics(R.string.interests_section_topics),
@@ -95,6 +103,61 @@ enum class Sections(@StringRes val titleResId: Int) {
  * @param section content of the tab, a composable that describes the content
  */
 class TabContent(val section: Sections, val content: @Composable () -> Unit)
+
+@Serializable
+data object InterestsKey : NavKey
+
+val InterestsDeepLinkPattern = DeepLinkPattern(
+    InterestsKey.serializer(),
+    uriPattern = "https://developer.android.com/jetnews/interests".toUri(),
+)
+
+fun EntryProviderScope<NavKey>.interestsEntry(
+    interestsRepository: InterestsRepository,
+    isExpandedScreen: () -> Boolean,
+    openDrawer: () -> Unit,
+) {
+    entry<InterestsKey> {
+        val interestsViewModel: InterestsViewModel =
+            viewModel(factory = InterestsViewModel.provideFactory(interestsRepository))
+
+        InterestsScreen(
+            interestsViewModel,
+            isExpandedScreen = isExpandedScreen(),
+            openDrawer = openDrawer,
+        )
+    }
+}
+
+/**
+ * Stateful composable that displays the Interests screen.
+ *
+ * @param interestsViewModel ViewModel that handles the business logic of this screen
+ * @param isExpandedScreen (state) true if the screen is expanded
+ * @param openDrawer (event) request opening the app drawer
+ * @param snackbarHostState (state) state for screen snackbar host
+ */
+@Composable
+fun InterestsScreen(
+    interestsViewModel: InterestsViewModel,
+    isExpandedScreen: Boolean,
+    openDrawer: () -> Unit,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+) {
+    val tabContent = rememberTabContent(interestsViewModel)
+    val (currentSection, updateSection) = rememberSaveable {
+        mutableStateOf(tabContent.first().section)
+    }
+
+    InterestsScreen(
+        tabContent = tabContent,
+        currentSection = currentSection,
+        isExpandedScreen = isExpandedScreen,
+        onTabChange = updateSection,
+        openDrawer = openDrawer,
+        snackbarHostState = snackbarHostState,
+    )
+}
 
 /**
  * Stateless interest screen displays the tabs specified in [tabContent] adapting the UI to
@@ -356,15 +419,16 @@ private fun InterestsTabRow(
 ) {
     when (isExpandedScreen) {
         false -> {
-            TabRow(
+            PrimaryTabRow(
                 selectedTabIndex = selectedTabIndex,
                 contentColor = MaterialTheme.colorScheme.primary,
             ) {
                 InterestsTabRowContent(selectedTabIndex, updateSection, tabContent)
             }
         }
+
         true -> {
-            ScrollableTabRow(
+            PrimaryScrollableTabRow(
                 selectedTabIndex = selectedTabIndex,
                 contentColor = MaterialTheme.colorScheme.primary,
                 edgePadding = 0.dp,

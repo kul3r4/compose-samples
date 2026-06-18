@@ -51,9 +51,9 @@ import com.example.jetnews.ui.theme.JetnewsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PostCardPopular(post: Post, navigateToArticle: (String) -> Unit, modifier: Modifier = Modifier) {
+fun PostCardPopular(post: Post, navigateToPost: (String) -> Unit, modifier: Modifier = Modifier) {
     Card(
-        onClick = { navigateToArticle(post.id) },
+        onClick = { navigateToPost(post.id) },
         shape = MaterialTheme.shapes.medium,
         modifier = modifier
             .width(280.dp),
@@ -86,10 +86,8 @@ fun PostCardPopular(post: Post, navigateToArticle: (String) -> Unit, modifier: M
                 Text(
                     text = stringResource(
                         id = R.string.home_post_min_read,
-                        formatArgs = arrayOf(
-                            post.metadata.date,
-                            post.metadata.readTimeMinutes,
-                        ),
+                        post.metadata.date,
+                        post.metadata.readTimeMinutes,
                     ),
                     style = MaterialTheme.typography.bodySmall,
                 )

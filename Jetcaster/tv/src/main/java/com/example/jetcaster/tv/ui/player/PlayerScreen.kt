@@ -59,7 +59,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -106,6 +106,7 @@ fun PlayerScreen(
 
     when (val s = uiState) {
         PlayerScreenUiState.Loading -> Loading(modifier)
+
         PlayerScreenUiState.NoEpisodeInQueue -> {
             NoEpisodeInQueue(backToHome = backToHome, modifier = modifier)
         }

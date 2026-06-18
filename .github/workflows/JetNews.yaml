@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Enable KVM group perms
         run: |
             echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -57,7 +57,7 @@ jobs:
       - name: Generate cache key
         run: ./scripts/checksum.sh $SAMPLE_PATH checksum.txt
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches/modules-*
@@ -75,7 +75,7 @@ jobs:
 
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: test-reports-jetnews-${{ matrix.api-level }}
           path: ${{ env.SAMPLE_PATH }}/app/build/reports/androidTests

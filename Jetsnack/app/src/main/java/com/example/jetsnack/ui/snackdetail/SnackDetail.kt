@@ -62,8 +62,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -85,6 +83,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -172,7 +171,7 @@ fun SnackDetail(snackId: Long, origin: String, upPress: () -> Unit) {
                     ),
                     animatedVisibilityScope,
                     clipInOverlayDuringTransition =
-                    OverlayClip(RoundedCornerShape(roundedCornerAnim)),
+                        OverlayClip(RoundedCornerShape(roundedCornerAnim)),
                     boundsTransform = snackDetailBoundsTransform,
                     exit = fadeOut(nonSpatialExpressiveSpring()),
                     enter = fadeIn(nonSpatialExpressiveSpring()),
@@ -228,7 +227,7 @@ private fun Header(snackId: Long, origin: String) {
                     boundsTransform = snackDetailBoundsTransform,
                     enter = fadeIn(nonSpatialExpressiveSpring()),
                     exit = fadeOut(nonSpatialExpressiveSpring()),
-                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                    resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds(),
                 )
                 .height(280.dp)
                 .fillMaxWidth()
@@ -271,7 +270,7 @@ private fun SharedTransitionScope.Up(upPress: () -> Unit) {
                 ),
         ) {
             Icon(
-                imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                painter = painterResource(id = R.drawable.ic_arrow_back),
                 tint = JetsnackTheme.colors.iconInteractive,
                 contentDescription = stringResource(R.string.label_back),
             )

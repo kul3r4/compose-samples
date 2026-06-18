@@ -58,7 +58,7 @@ internal fun Catalog(
         modifier = modifier,
         contentPadding = JetcasterAppDefaults.overScanMargin.catalog.intoPaddingValues(),
         verticalArrangement =
-        Arrangement.spacedBy(JetcasterAppDefaults.gap.section),
+            Arrangement.spacedBy(JetcasterAppDefaults.gap.section),
         state = state,
     ) {
         if (header != null) {
@@ -154,11 +154,11 @@ private fun PodcastRow(
         modifier = modifier
             .focusRequester(focusRequester)
             .focusProperties {
-                exit = {
+                onExit = {
                     focusRequester.saveFocusedChild()
                     FocusRequester.Default
                 }
-                enter = {
+                onEnter = {
                     if (focusRequester.restoreFocusedChild()) {
                         FocusRequester.Cancel
                     } else {

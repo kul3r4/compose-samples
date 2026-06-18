@@ -228,9 +228,7 @@ private fun SelectorExpanded(currentSelector: InputSelector, onCloseRequested: (
             InputSelector.PICTURE -> FunctionalityNotAvailablePanel()
             InputSelector.MAP -> FunctionalityNotAvailablePanel()
             InputSelector.PHONE -> FunctionalityNotAvailablePanel()
-            else -> {
-                throw NotImplementedError()
-            }
+            InputSelector.NONE -> Unit
         }
     }
 }

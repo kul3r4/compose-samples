@@ -4,59 +4,61 @@
 #####
 [versions]
 accompanist = "0.37.3"
-android-material3 = "1.14.0-alpha04"
-androidGradlePlugin = "8.13.0"
-androidx-activity-compose = "1.11.0"
+android-material3 = "1.14.0-rc01"
+androidGradlePlugin = "9.2.1"
+androidx-activity-compose = "1.13.0"
 androidx-appcompat = "1.7.1"
-androidx-compose-bom = "2025.09.00"
+androidx-compose-bom = "2026.05.00"
 androidx-constraintlayout = "1.1.1"
-androidx-core-splashscreen = "1.0.1"
-androidx-corektx = "1.17.0"
+androidx-core-splashscreen = "1.2.0"
+androidx-corektx = "1.18.0"
 androidx-glance = "1.1.1"
 androidx-lifecycle = "2.8.2"
-androidx-lifecycle-compose = "2.9.4"
-androidx-lifecycle-runtime-compose = "2.9.4"
-androidx-navigation = "2.9.4"
+androidx-lifecycle-compose = "2.10.0"
+androidx-lifecycle-runtime-compose = "2.10.0"
+androidx-lifecycle-viewmodel-navigation3 = "2.10.0"
+androidx-navigation = "2.9.8"
+androidx-navigation3 = "1.2.0-alpha02"
 androidx-palette = "1.0.0"
 androidx-test = "1.7.0"
 androidx-test-espresso = "3.7.0"
 androidx-test-ext-junit = "1.3.0"
 androidx-test-ext-truth = "1.7.0"
-androidx-tv-foundation = "1.0.0-alpha12"
-androidx-tv-material = "1.0.1"
-androidx-wear-compose = "1.5.1"
-androidx-window = "1.4.0"
+androidx-tv-foundation = "1.0.0"
+androidx-tv-material = "1.1.0"
+androidx-wear-compose = "1.6.1"
+androidx-window = "1.5.1"
 androidxHiltNavigationCompose = "1.3.0"
 androix-test-uiautomator = "2.3.0"
 coil = "2.7.0"
 # @keep
 compileSdk = "36"
-coroutines = "1.10.2"
-google-maps = "19.2.0"
-gradle-versions = "0.52.0"
-hilt = "2.57.1"
+coroutines = "1.11.0"
+google-maps = "20.0.0"
+gradle-versions = "0.54.0"
+hilt = "2.59.2"
 hiltExt = "1.3.0"
 horologist = "0.7.15"
 jdkDesugar = "2.1.5"
 junit = "4.13.2"
-kotlin = "2.2.20"
-kotlinx-serialization-json = "1.9.0"
+kotlin = "2.3.21"
+kotlinx-serialization = "1.11.0"
 kotlinx_immutable = "0.4.0"
-ksp = "2.2.20-2.0.3"
-maps-compose = "6.10.0"
+ksp = "2.3.7"
+maps-compose = "8.3.0"
 # @keep
-minSdk = "21"
-okhttp = "5.1.0"
-play-services-wearable = "19.0.0"
-robolectric = "4.16"
-roborazzi = "1.50.0"
+minSdk = "23"
+okhttp = "5.3.2"
+play-services-wearable = "20.0.1"
+robolectric = "4.16.1"
+roborazzi = "1.60.0"
 rome = "2.1.0"
-room = "2.8.0"
+room = "2.8.4"
 secrets = "2.0.1"
-spotless = "7.2.1"
+spotless = "8.4.0"
 # @keep
 targetSdk = "33"
-version-catalog-update = "1.0.0"
+version-catalog-update = "1.1.0"
 
 [libraries]
 accompanist-adaptive = { module = "com.google.accompanist:accompanist-adaptive", version.ref = "accompanist" }
@@ -101,11 +103,14 @@ androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-kt
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle-runtime-compose" }
 androidx-lifecycle-viewModelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle-compose" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-compose" }
+androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "androidx-lifecycle-viewmodel-navigation3" }
 androidx-lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle-compose" }
 androidx-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation" }
+androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "androidx-navigation3" }
+androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "androidx-navigation3" }
 androidx-palette = { module = "androidx.palette:palette", version.ref = "androidx-palette" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
@@ -148,7 +153,8 @@ kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.re
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx_immutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 okhttp3 = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 play-services-wearable = { module = "com.google.android.gms:play-services-wearable", version.ref = "play-services-wearable" }

@@ -49,8 +49,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -121,7 +119,7 @@ fun SnackCollection(
                 modifier = Modifier.align(Alignment.CenterVertically),
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                    painter = painterResource(id = R.drawable.ic_arrow_back),
                     tint = JetsnackTheme.colors.brand,
                     contentDescription = null,
                 )
@@ -249,7 +247,7 @@ fun SnackItem(snack: Snack, snackCollectionId: Long, onSnackClick: (Long, String
                             animatedVisibilityScope = animatedVisibilityScope,
                             enter = fadeIn(nonSpatialExpressiveSpring()),
                             exit = fadeOut(nonSpatialExpressiveSpring()),
-                            resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                            resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds(),
                             boundsTransform = snackDetailBoundsTransform,
                         ),
                 )
@@ -345,7 +343,7 @@ private fun HighlightSnackItem(
                                 boundsTransform = snackDetailBoundsTransform,
                                 enter = fadeIn(nonSpatialExpressiveSpring()),
                                 exit = fadeOut(nonSpatialExpressiveSpring()),
-                                resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                                resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds(),
                             )
                             .height(100.dp)
                             .fillMaxWidth()
@@ -407,7 +405,7 @@ private fun HighlightSnackItem(
                             enter = fadeIn(nonSpatialExpressiveSpring()),
                             exit = fadeOut(nonSpatialExpressiveSpring()),
                             boundsTransform = snackDetailBoundsTransform,
-                            resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                            resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds(),
                         )
                         .wrapContentWidth(),
                 )
@@ -431,7 +429,7 @@ private fun HighlightSnackItem(
                             enter = fadeIn(nonSpatialExpressiveSpring()),
                             exit = fadeOut(nonSpatialExpressiveSpring()),
                             boundsTransform = snackDetailBoundsTransform,
-                            resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                            resizeMode = SharedTransitionScope.ResizeMode.scaleToBounds(),
                         )
                         .wrapContentWidth(),
                 )
